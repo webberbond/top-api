@@ -1,0 +1,23 @@
+version: '3.1'
+services:
+  top.api:
+    image: ghcr.io/webberbond/top-api/top-api:develop
+    container_name: top-api
+    restart: always
+    ports:
+      - 3000:3000
+    #        volumes:
+    #           - ./.env:/otp/app/.env # Укажите ту директорию которую вы выбрали в Dockerfile, в данном случае (WORKDIR /app)
+    env_file:
+      - .env
+  mongo:
+    image: mongo:4.4.4
+    container_name: top-api-mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo-data:/data/dbv
