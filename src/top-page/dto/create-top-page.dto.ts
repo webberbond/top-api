@@ -2,6 +2,7 @@ import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { TopLevelCategory, TopPageModel } from '../top-page.model';
 import {
   IsArray,
+  IsDate,
   IsEnum,
   IsNumber,
   IsOptional,
@@ -22,6 +23,9 @@ export class HhDataDto {
 
   @IsNumber()
   seniorSalary: number;
+
+  @IsDate()
+  updatedAt: Date;
 }
 
 export class TopPageAdvantageDto {

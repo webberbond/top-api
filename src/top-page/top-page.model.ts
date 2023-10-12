@@ -10,6 +10,7 @@ export enum TopLevelCategory {
   Products,
 }
 
+@Schema()
 export class HhData {
   @Prop()
   count: number;
@@ -22,17 +23,24 @@ export class HhData {
 
   @Prop()
   seniorSalary: number;
-}
 
-export class TopPageAdvantage {
+  @Prop()
+  updatedAt: Date;
+}
+export const HhDataSchema = SchemaFactory.createForClass(HhData);
+
+@Schema()
+export class TopPageAdvantege {
   @Prop()
   title: string;
 
   @Prop()
   description: string;
 }
+export const TopPageAdvantegeSchema =
+  SchemaFactory.createForClass(TopPageAdvantege);
 
-@Schema({ timestamps: true, _id: true })
+@Schema({ timestamps: true })
 export class TopPageModel {
   @Prop({ enum: TopLevelCategory })
   firstCategory: TopLevelCategory;
@@ -49,11 +57,11 @@ export class TopPageModel {
   @Prop()
   category: string;
 
-  @Prop({ type: () => HhData })
+  @Prop({ type: HhDataSchema })
   hh?: HhData;
 
-  @Prop({ type: () => [TopPageAdvantage] })
-  advantages: TopPageAdvantage[];
+  @Prop({ type: [TopPageAdvantegeSchema] })
+  advantages: TopPageAdvantege[];
 
   @Prop()
   seoText: string;
@@ -61,8 +69,11 @@ export class TopPageModel {
   @Prop()
   tagsTitle: string;
 
-  @Prop({ type: () => [String] })
-  tagList: string[];
+  @Prop([String])
+  tags: string[];
+
+  @Prop({ type: Date })
+  updatedAt: Date;
 }
 
 const TopPageModelSchema = SchemaFactory.createForClass(TopPageModel);
