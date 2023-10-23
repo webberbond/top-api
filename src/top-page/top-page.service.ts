@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTopPageDto } from './dto/create-top-page.dto';
 import { TopPageModel, TopLevelCategory } from './top-page.model';
+import { addDays } from 'date-fns';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class TopPageService {
@@ -54,13 +56,25 @@ export class TopPageService {
       .exec();
   }
 
-  async delete(id: string) {
+  async deleteById(id: string) {
     return await this.topPageModel.findByIdAndRemove(id).exec();
   }
 
-  async patch(id: string, dto: CreateTopPageDto) {
+  async updateById(id: string | Types.ObjectId, dto: CreateTopPageDto) {
     return await this.topPageModel
       .findByIdAndUpdate(id, dto, { new: true })
+      .exec();
+  }
+
+  async findForHhUpdate(date: Date) {
+    return this.topPageModel
+      .find({
+        firstCategory: 0,
+        $or: [
+          { 'hh.updatedAt': { $lt: addDays(date, -1) } },
+          { 'hh.updatedAt': { $exists: false } },
+        ],
+      })
       .exec();
   }
 }

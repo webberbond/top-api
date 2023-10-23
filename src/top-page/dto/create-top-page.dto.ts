@@ -28,7 +28,7 @@ export class HhDataDto {
   updatedAt: Date;
 }
 
-export class TopPageAdvantageDto {
+export class TopPageAdvantegeDto {
   @IsString()
   title: string;
 
@@ -36,7 +36,6 @@ export class TopPageAdvantageDto {
   description: string;
 }
 
-@Schema({ timestamps: true, _id: true })
 export class CreateTopPageDto {
   @IsEnum(TopLevelCategory)
   firstCategory: TopLevelCategory;
@@ -59,8 +58,9 @@ export class CreateTopPageDto {
   hh?: HhDataDto;
 
   @IsArray()
-  @Type(() => TopPageAdvantageDto)
-  advantages: TopPageAdvantageDto[];
+  @ValidateNested()
+  @Type(() => TopPageAdvantegeDto)
+  advantages: TopPageAdvantegeDto[];
 
   @IsString()
   seoText: string;
@@ -70,7 +70,7 @@ export class CreateTopPageDto {
 
   @IsArray()
   @IsString({ each: true })
-  tagList: string[];
+  tags: string[];
 }
 
 export const TopPageModelSchema = SchemaFactory.createForClass(TopPageModel);
